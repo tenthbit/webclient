@@ -1,0 +1,25 @@
+html, body, header h1, #switcher ul { margin: 0; padding: 0; }
+
+header { margin: 5px; }
+header h1 {
+  text-indent: -999px;
+  background: url(img/10bit) no-repeat top left;
+  display: block;
+  width: 150px;
+  height: 60px;
+}
+#statusbox { float: right; text-align: right; }
+#statusbox p { margin: 0; }
+
+#switcher ul {
+  display: block;
+  background: #339;
+  list-style: none;
+}
+#switcher li {
+  display: inline-block;
+}
+#switcher li a {
+  display: block;
+}
+
