@@ -3,7 +3,7 @@ html, body, header h1, #switcher ul { margin: 0; padding: 0; }
 header { margin: 5px; }
 header h1 {
   text-indent: -999px;
-  background: url(img/10bit) no-repeat top left;
+  background: url(img/10bit.svg) no-repeat top left;
   display: block;
   width: 150px;
   height: 60px;
