@@ -27,18 +27,18 @@ var ops = {
   },
   
   meta: function (pkt, ex) {
-    if (pkt.tp) {
-      $.topic = pkt.tp;
-      $.ui.log(pkt.tp, 'Current topic: ' + ex.name);
-      $.ui.log(pkt.tp, ex.description);
-      $.ui.log(pkt.tp, 'Users: ' + ex.users.join(', '));
+    if (pkt.rm) {
+      $.room = pkt.rm;
+      $.ui.log(pkt.rm, 'Current room: ' + ex.name);
+      $.ui.log(pkt.rm, ex.description);
+      $.ui.log(pkt.rm, 'Users: ' + ex.users.join(', '));
     };
   },
   
   act: function (pkt, ex) {
-    if (!pkt.tp || !pkt.sr || ex.type != 'msg') return;
+    if (!pkt.rm || !pkt.sr || ex.type != 'msg') return;
     
-    $.ui.log(pkt.tp, '<' + pkt.sr + '> ' + ex.data);
+    $.ui.log(pkt.rm, '<' + pkt.sr + '> ' + ex.data);
   }
 };
 
