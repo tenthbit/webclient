@@ -3,13 +3,14 @@ var ops = {
     $.updateStatus(1, 'connected to ' + ex.server);
     
     $.ui.log('debug', 'Received server welcome from ' + ex.server + ': ' + ex.software);
-    $.ts = ex.now;
+    $.ts = pkt.ts;
     $.ui.log('debug', ex.server + ' is willing to use ' + ex.auth.join(', ') + ' for auth');
     
     if (ex.auth.indexOf('password') >= 0) {
       var user = prompt('username', window.localStorage['10bit.username']);
       var pass = prompt('password');
-      window.localStorage['10bit.username'] = $.user = user;
+      
+      if (user) window.localStorage['10bit.username'] = user;
       
       $.sendPkt({op: 'auth', ex: {method: 'password', username: user, password: pass}});
     } else {
@@ -17,18 +18,18 @@ var ops = {
     };
   },
   
-  ack: function (pkt, ex) {
-    if (ex.for == 'auth') {
-      $.ui.log('debug', 'Authentication successful.');
-      $.updateStatus(2, 'logged in as ' + $.user);
-    } else {
-      console.log('something worked');
+  auth: function (pkt, ex) {
+    if (ex.isack) {
+      $.ui.log('debug', 'Authentication as ' + ex.username + ' successful.');
+      $.updateStatus(2, 'logged in as ' + ex.username);
+      $.user = ex.username;
     }
   },
   
   meta: function (pkt, ex) {
     if (pkt.rm) {
       $.room = pkt.rm;
+      $.rooms.push(pkt.ex);
       $.ui.log(pkt.rm, 'Current room: ' + ex.name);
       $.ui.log(pkt.rm, ex.description);
       $.ui.log(pkt.rm, 'Users: ' + ex.users.join(', '));
@@ -36,9 +37,9 @@ var ops = {
   },
   
   act: function (pkt, ex) {
-    if (!pkt.rm || !pkt.sr || ex.type != 'msg') return;
+    if (!pkt.rm || !pkt.sr || !ex.message) return;
     
-    $.ui.log(pkt.rm, '<' + pkt.sr + '> ' + ex.data);
+    $.ui.log(pkt.rm, '<' + pkt.sr + '> ' + ex.message);
   }
 };
 

@@ -51,7 +51,7 @@ $(function () {
     $txt.focus();
     $txt.val('');
     
-    $.send({op: 'act', rm: $.room, ex: {type: 'msg', data: text}});
+    $.send({op: 'act', rm: $.room, ex: {message: text}});
   });
   $txt.focus();
   

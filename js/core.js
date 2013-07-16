@@ -1,5 +1,6 @@
 $(function () {
   $.updateStatus(1, 'disconnected');
+  $.rooms = [];
   
   if (!window.localStorage['10bit.server'])
     window.localStorage['10bit.server'] = '10bit.danopia.net';
