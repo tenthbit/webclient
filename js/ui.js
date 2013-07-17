@@ -9,6 +9,7 @@ $(function () {
   var $book = $('#book');
   var pages = {};
   $.roommeta = {};
+  var current;
   
   $.ui.log = function (id, msg) {
     var page = $.ui.getPage(id);
@@ -20,7 +21,7 @@ $(function () {
     var page = {id: id, meta: $.roommeta[id]};
     
     page.$tab = $('<li>').data('id', id);
-    page.$a = $('<a>', {text: page.meta ? page.meta.name : id, href: '#'+id}).appendTo(page.$tab);
+    page.$a = $('<a>', {text: page.meta ? page.meta.name : id, href: '#'+id}).appendTo(page.$tab).data('id', id);
     $tabs.append(page.$tab);
     
     page.$page = $('<section>').data('id', id);
@@ -35,8 +36,25 @@ $(function () {
       };
     }
     
-    return pages[id] = page;
+    pages[id] = page;
+    
+    if (!current)
+      $.ui.showTab(id);
+    
+    return page;
   };
+  
+  $.ui.showTab = function (id) {
+    if (current) {
+      current.$tab.removeClass('active');
+      current.$page.removeClass('active');
+    }
+    
+    current = $.ui.getPage(id);
+    current.$tab.addClass('active');
+    current.$page.addClass('active');
+    $txt.focus();
+  }
   
   $.ui.updateMeta = function (id, meta) {
     $.roommeta[id] = meta;
@@ -73,6 +91,13 @@ $(function () {
     };
   };
   
+  $tabs.on('click', 'a', function (e) {
+    e.preventDefault();
+    
+    var id = $(e.target).data('id');
+    $.ui.showTab(id);
+  });
+  
   /*
    * Statusbox Control
    **************************************/
@@ -93,7 +118,7 @@ $(function () {
     $txt.focus();
     $txt.val('');
     
-    $.send({op: 'act', rm: $.room, ex: {message: text}});
+    $.send({op: 'act', rm: current.id, ex: {message: text}});
   });
   $txt.focus();
   
