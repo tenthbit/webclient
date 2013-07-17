@@ -12,8 +12,9 @@ $(function () {
   var current;
   
   $.ui.log = function (id, msg) {
-    var page = $.ui.getPage(id);
-    page.$backlog.append($('<p>', {text: msg}));
+    var page = $.ui.getPage(id), $p;
+    page.$backlog.append($p = $('<p>', {text: msg}));
+    $p[0].scrollIntoView();
   };
   
   $.ui.getPage = function (id) {
