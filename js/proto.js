@@ -38,12 +38,14 @@ var ops = {
     if (pkt.ex && pkt.ex.isack) roomids.push(pkt.sr);
     
     $.ui.addNick(pkt.rm, pkt.sr);
+    $.ui.log(pkt.rm, pkt.sr + ' joined');
   },
   
   leave: function (pkt, ex) {
     if (!pkt.rm) return;
     if (pkt.ex && pkt.ex.isack) roomids.splice(roomids.indexOf(pkt.sr), 1);
     
+    $.ui.log(pkt.rm, pkt.sr + ' left');
     $.ui.removeNick(pkt.rm, pkt.sr);
   },
   
@@ -51,14 +53,20 @@ var ops = {
     for (var idx in roomids) {
       var id = roomids[idx];
       
-      if ($.ui.getPage(id).meta.users.indexOf(pkt.sr) >= 0)
+      if ($.ui.getPage(id).meta.users.indexOf(pkt.sr) >= 0) {
+        $.ui.log(id, pkt.sr + ' disconnected');
         $.ui.removeNick(id, pkt.sr);
+      };
     };
   },
   
   act: function (pkt, ex) {
     if (!pkt.rm || !pkt.sr || !ex.message) return;
-    $.ui.log(pkt.rm, '<' + pkt.sr + '> ' + ex.message);
+    
+    if (ex.isaction)
+      $.ui.log(pkt.rm, '* ' + pkt.sr + ' ' + ex.message);
+    else
+      $.ui.log(pkt.rm, '<' + pkt.sr + '> ' + ex.message);
   }
 };
 
