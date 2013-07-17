@@ -13,7 +13,7 @@ var ops = {
       
       if (user) window.localStorage['10bit.username'] = user;
       
-      $.sendPkt({op: 'auth', ex: {method: 'password', username: user, password: pass}});
+      $.send({op: 'auth', ex: {method: 'password', username: user, password: pass}});
     } else {
       $.ui.log('status', 'Unable to authenticate. I don\'t know any methods that the server will accept :(');
     };
