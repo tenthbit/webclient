@@ -115,11 +115,35 @@ $(function () {
   $form.submit(function (e) {
     e.preventDefault();
     
-    var text = $txt.val();
+    var msg = $txt.val();
     $txt.focus();
     $txt.val('');
     
-    $.send({op: 'act', rm: current.id, ex: {message: text}});
+    if (msg[0] == '/') {
+      var words = msg.split(' ');
+      var cmd = words.shift().substring(1);
+      msg = words.join(' ');
+      
+      if (cmd == 'me') {
+        $.send({op: 'act', rm: current.id, ex: {message: msg, isaction: true}});
+      } else if (cmd == 'join') {
+        if (!msg.length) msg = current.id;
+        $.send({op: 'join', rm: msg});
+      } else if (cmd == 'part' || cmd == 'leave') {
+        if (!msg.length) msg = current.id;
+        $.send({op: 'leave', rm: msg});
+      } else if (cmd == 'cycle') {
+        if (!msg.length) msg = current.id;
+        $.send({op: 'leave', rm: msg});
+        $.send({op: 'join', rm: msg});
+      } else if (cmd == 'quit') {
+        $.send({op: 'disconnect'});
+      } else {
+        $.ui.log(current.id, 'Unknown command: ' + cmd);
+      };
+    } else {
+      $.send({op: 'act', rm: current.id, ex: {message: msg}});
+    };
   });
   $txt.focus();
   
