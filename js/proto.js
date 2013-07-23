@@ -35,7 +35,7 @@ var ops = {
   
   join: function (pkt, ex) {
     if (!pkt.rm) return;
-    if (pkt.ex && pkt.ex.isack) roomids.push(pkt.sr);
+    if (pkt.ex && pkt.ex.isack) roomids.push(pkt.rm);
     
     $.ui.addNick(pkt.rm, pkt.sr);
     $.ui.log(pkt.rm, pkt.sr + ' joined');
@@ -43,7 +43,7 @@ var ops = {
   
   leave: function (pkt, ex) {
     if (!pkt.rm) return;
-    if (pkt.ex && pkt.ex.isack) roomids.splice(roomids.indexOf(pkt.sr), 1);
+    if (pkt.ex && pkt.ex.isack) roomids.splice(roomids.indexOf(pkt.rm), 1);
     
     $.ui.log(pkt.rm, pkt.sr + ' left');
     $.ui.removeNick(pkt.rm, pkt.sr);
