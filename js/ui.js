@@ -11,7 +11,9 @@ $(function () {
   $.roommeta = {};
   var current;
   
-  $.ui.log = function (id, msg) {
+  $.ui.log = function (id, msg, time) {
+    msg = '[' + moment(time).format('HH:mm:ss') + '] ' + String(msg);
+    
     var page = $.ui.getPage(id), $p;
     page.$backlog.append($p = $('<p>', {text: msg}));
     $p[0].scrollIntoView();
