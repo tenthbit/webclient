@@ -45,7 +45,7 @@ var ops = {
     if (!pkt.rm) return;
     if (pkt.ex && pkt.ex.isack) roomids.splice(roomids.indexOf(pkt.rm), 1);
     
-    $.ui.log(pkt.rm, pkt.sr + ' left', pkt.ts;
+    $.ui.log(pkt.rm, pkt.sr + ' left', pkt.ts);
     $.ui.removeNick(pkt.rm, pkt.sr);
   },
   
@@ -61,7 +61,7 @@ var ops = {
   },
   
   act: function (pkt, ex) {
-    if (!pkt.rm || !pkt.sr || !ex.message) return;
+    if (!pkt.rm || !pkt.sr || !('message' in ex)) return;
     
     if (ex.orig && pkt.sr == 'relay') {
       ex.isaction = ex.wasact;
