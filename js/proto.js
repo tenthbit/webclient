@@ -63,6 +63,12 @@ var ops = {
   act: function (pkt, ex) {
     if (!pkt.rm || !pkt.sr || !ex.message) return;
     
+    if (ex.orig && pkt.sr == 'relay') {
+      ex.isaction = ex.wasact;
+      ex.message = ex.orig;
+      pkt.sr = '%' + ex.nick;
+    }
+    
     if (ex.isaction)
       $.ui.log(pkt.rm, '* ' + pkt.sr + ' ' + ex.message);
     else
